@@ -1,0 +1,7 @@
+1. Trim in schema means white spaces before and after string will be eliminated
+
+2. A URI (Uniform Resource Identifier) is a formal system for uniquely identifying resources and consists of two types: URLs (Uniform Resource Locator) and URNs (Uniform Resource Name).
+
+3. In simple term, the strict query option in connect.js, ensures that values passed to our model constructor that were not specified in our schema do not get saved to the db
+
+4. .concat() means adds to array or strings
