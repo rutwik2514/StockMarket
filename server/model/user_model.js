@@ -12,6 +12,10 @@ const user_schema = new mongoose.Schema({
         trim : true,
         required : [true, "Must provide Name"]
     },
+    userPassword:{
+        type : String,
+        required : [true, "Must provide Password"]
+    },
     userPortfolio: [{
         userBalance:{
             type:Number,

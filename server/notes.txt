@@ -5,3 +5,7 @@
 3. In simple term, the strict query option in connect.js, ensures that values passed to our model constructor that were not specified in our schema do not get saved to the db
 
 4. .concat() means adds to array or strings
+
+5. In bycrypt.compare arguments matter, first argument should be input password and second argument should be encrypted password
+
+6. In client in jest.config.js, we verbose = true which means in console it will show decription as well that which test are passed and which are not

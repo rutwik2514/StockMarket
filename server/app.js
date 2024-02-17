@@ -13,12 +13,16 @@ connect(process.env.MONGO_URI);
 
 // Using middlewares
 app.use(express.json());
-app.use(cors({ origin:'http://localhost:3000', credentials: true }));
+app.use(cors({ origin:['http://localhost', "http://localhost:3000"], credentials: true }));
 // app.use(cookieParser());
 app.use("/api/v1", routes);
 
 //Starting server
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running at port ${PORT}.`);
 });
+
+module.exports={
+  server
+}

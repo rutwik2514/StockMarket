@@ -1,0 +1,18 @@
+implement testing
+complete login and register page and use testcases to see if its working properly with valid email ids and not
+
+for refernce : https://youtu.be/v6LK5alOofs?feature=shared
+
+use getbytestid
+
+for each and every page, there should be unit testing as well as integration testing in which you can use top-down, down-up, mixed and big bang whatever
+
+
+
+
+NOTE : YOU HAVE TO DESIGN FRONTEND IN SUCH A WAY THAT YOU SHOULD LOOK AS FRONTEND DEVELOPE
+
+
+
+
+https://buddy.works/tutorials/testing-with-jest-password-authentication-in-mongoose-model

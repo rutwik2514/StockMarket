@@ -6,17 +6,16 @@ function Dashboard() {
   const dashboardData = useSelector((state) => state.dashboardData)
   const dispatch = useDispatch();
 
-  
   // getting all user data as soon as dashboard page is rendered
   React.useEffect(() => {
     axios.post("http://localhost:8000/api/v1/getUser",{
-      userEmail : "rutwik2514@gmail.com3"
-     }).then((res) =>{;
+      userEmail : localStorage.getItem("userEmail")
+     }).then((res) =>{
       dispatch(renderDashboardData(res.data.data.profile));
      }).catch((err)=>{
       window.alert(err.response.data.msg);
      })
-  }, [])
+  },[])
 
   return (
     <>

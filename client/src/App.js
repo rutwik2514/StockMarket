@@ -4,6 +4,7 @@ import Homepage from './components/Homepage'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import Dashboard from './components/Dashboard'
+import Login from './components/Login';
 
 function App() {
   return (
@@ -12,6 +13,8 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Homepage />} /> 
         <Route exact path="/dashboard" element={<Dashboard />} /> 
+        <Route exact path="/login" element={<Login />} /> 
+
 
       </Routes>
     </BrowserRouter>
