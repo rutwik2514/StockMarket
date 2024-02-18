@@ -44,7 +44,7 @@ const login = async (req, res) => {
     if (profile == null) {
         return res.status(400).json({ msg: "USER NOT FOUND" });
     }
-    if (await bcrypt.compare(userPassword,profile.userPassword)){console.log("bcrypt given true"); return res.status(200).json({ userEmail })}
+    if (await bcrypt.compare(userPassword,profile.userPassword)){ return res.status(200).json({ userEmail })}
     else return res.status(400).json({ msg: "INCORRECT PASSWORD" });
 
 }

@@ -22,8 +22,9 @@ function Dashboard() {
       <div className='d-flex'>
         <div>NAME </div>
         <div>PROFILE</div>
-        <div>LOGOUT</div>
       </div>
+        <div>LOGOUT</div>
+      <button>Logout</button>
       <div></div>
       <div>CURRENT Portfolio</div>
       <div>PROFIT LOSS CHART, pie charts(total number buyed till now, total spent, total gain, proftolio current money)  </div>
