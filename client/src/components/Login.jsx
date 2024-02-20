@@ -1,9 +1,11 @@
 import React from 'react'
 import axios from "axios"
 import { ToastContainer, toast } from 'react-toastify';
+import logo from "../assets/lottie_gif.gif"
 function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [showWaterMark,setShowWaterMark] = React.useState(false);
   async function handleClick(e) {
     e.preventDefault();
     if (email == "" || password == "") {
@@ -14,9 +16,11 @@ function Login() {
         userEmail: email,
         get: false,
         userPassword: password
-      }).then((res) => {
+      },{withCredentials:true}).then((res) => {
         localStorage.setItem("userEmail", res.data.userEmail);
+        localStorage.setItem("token", res.data.accessToken)
         toast.success("Login Successful, please wait while we redirect")
+        setShowWaterMark(true);
         setTimeout(function () {
           window.location.href = "/dashboard"; 
        }, 3000);
@@ -25,18 +29,22 @@ function Login() {
       })
     }
   }
-  return (
-    <>
-      <form onSubmit={handleClick}>
-        <label htmlFor="email">Enter your email:</label>
-        <input type="email" id="email" data-testid="email" placeholder='enter email' name="email" onChange={(e) => { setEmail(e.target.value) }} required />
-        <label htmlFor="email">Enter your Password:</label>
-        <input data-testid="password" placeholder='enter password' type="password" id="password" name="password" onChange={(e) => { setPassword(e.target.value) }} required />
-        <div>
+  
 
+  return (
+    <section className='d-flex justify-content-center align-items-center' style={{ height: '100vh', width: '100vw', position: 'relative'}}>
+      {showWaterMark && <img src={logo} style={{ height: '100vh', zIndex: '1', opacity: '0.2', position: 'absolute' }} alt="watermark" />}
+      {!showWaterMark && <div>
+      <form onSubmit={handleClick}>
+
+        <label htmlFor="email">Enter your email:</label>
+        <input type="email" data-testid = "email" placeholder='enter email' name="email" onChange={(e) => { setEmail(e.target.value) }} required />
+        <label htmlFor="email">Enter your Password:</label>
+        <input placeholder='enter password' data-testid = "password" type="password" name="password" onChange={(e) => { setPassword(e.target.value) }} required />
+        <div>
         <button data-testid="btn" type="submit" value="submit" onClick={handleClick}>Login</button>
         </div>
-      </form>
+      </form></div>}
       <ToastContainer
           position="top-center"
           autoClose={3000}
@@ -48,7 +56,8 @@ function Login() {
           draggable
           pauseOnHover
         />
-    </>
+        
+    </section>
   )
 }
 

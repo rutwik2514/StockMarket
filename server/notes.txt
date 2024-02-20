@@ -9,3 +9,28 @@
 5. In bycrypt.compare arguments matter, first argument should be input password and second argument should be encrypted password
 
 6. In client in jest.config.js, we verbose = true which means in console it will show decription as well that which test are passed and which are not
+
+7. not able to write test where i can verify if its able to register or not because, in running test, its actually inserting into database
+
+8. Cookies work different in mobile and web, in web we can access req.cookie but in mobile app, it comes in body
+
+9. storing data has three types, cookie, localstorage, session storage,  
+
+10. session storage: its valid only till that tab is open, for e.x if you are watching youtube video on playback speed of 2x, and if you select one of video from recommendation, then it will also have playback speed of 2x. whereas if we open same video on different tab, then the playback speed comes to defualt 1x, this is how session storage works.
+
+11. Cookie can be created both, at browser and server side, whereas localstorage and session storage are available only on browser side
+
+12. Advantages of cookies : 
+    Secure flag : means cookie will work only in secured site(https)
+    samesite : it has three parts, strick, lack, none, strict means it will only work for that domain for eg(youtube.com) but if lack, then cookies will work for (youtube.com, jobs.youtube.com, play.youtube.com) and if none then it will work for any site
+    http only : this means that cookie can only be set in server, and it cant be set in browser
+
+
+13. Sometimes mongodb geven error, refusing to connect, click windows button, search services, find mongodb, and start service 
+
+14. React.strictMode in index is the reason that api and all requests are made twice in react.
+
+
+15. You should not delete manifest.json in public folder of reactapp, or else "manifest error, line 1, syntax error" will appear in console everytime
+
+16. What does empty array & no any array means in useEffect();

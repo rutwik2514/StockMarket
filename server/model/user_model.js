@@ -38,6 +38,12 @@ const user_schema = new mongoose.Schema({
             },
             stockPurchaseTime : {
                 type:String,
+            },
+            stockQuantity:{
+                type:Number
+            },
+            stockTotalValue : {
+                type:Number
             }
         }]
 

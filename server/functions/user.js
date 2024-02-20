@@ -1,8 +1,6 @@
 const express = require("express");
 const userModel = require("../model/user_model");
 
-
-
 const getUser = async (req, res) => {
     try {
         const profile = await userModel.findOne({ userEmail: req.body.userEmail });
