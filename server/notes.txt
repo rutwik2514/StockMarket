@@ -34,3 +34,5 @@
 15. You should not delete manifest.json in public folder of reactapp, or else "manifest error, line 1, syntax error" will appear in console everytime
 
 16. What does empty array & no any array means in useEffect();
+
+17. Diff between const var let

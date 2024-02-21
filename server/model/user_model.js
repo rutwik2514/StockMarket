@@ -26,24 +26,27 @@ const user_schema = new mongoose.Schema({
         userProfit:{
             type:Number,
         },
+        userLoss:{
+            type:Number,
+        },
         userStocks : [{
             stockName:{
                 type:String,
             },
-            stockPurchasePrice : {
-                type: String,
-            },
-            stockPurchaseDate:{
-                type:String,
-            },
-            stockPurchaseTime : {
-                type:String,
+            stockId : {
+                type:Number
             },
             stockQuantity:{
                 type:Number
             },
             stockTotalValue : {
                 type:Number
+            },
+            stockPurchaseValue : {
+                type:Number
+            },
+            stockPurchaseDate : {
+                type:String
             }
         }]
 

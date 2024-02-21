@@ -29,6 +29,7 @@ const register = async (req, res) => {
             userBalance: profile.userPortfolio[0].userBalance,
             userSpent: profile.userPortfolio[0].userSpent,
             userProfit: profile.userPortfolio[0].userProfit,
+            userLoss : 0,
             userStocks: profile.userPortfolio[0].userStocks
 
         }]

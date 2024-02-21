@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Buypage from './components/Buypage';
 import StudyStock from './components/StudyStock';
+import SellPage from './components/SellPage';
 function App() {
   return (
     <>
@@ -20,6 +21,8 @@ function App() {
         <Route exact path="/register" element={<Register />} /> 
         <Route exact path="/buy" element={<Buypage />} /> 
         <Route exact path="/study" element={<StudyStock />} /> 
+        <Route exact path="/sell" element={<SellPage />} /> 
+
 
 
 

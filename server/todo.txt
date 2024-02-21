@@ -6,10 +6,11 @@
 4. check cookies for mobilr
 5. change all status codes
 6. Update your github
-7. Buy stock endpoint
-8. sell stock endpoint
-10. if same stock buyed, then update it,
+
+
+7. Sell history create
 11. Write test cases 
+12. Need to update date in buy and sell page, as now, its set to 16th feb
 
 
 NOTE : YOU HAVE TO DESIGN FRONTEND IN SUCH A WAY THAT YOU SHOULD LOOK AS FRONTEND DEVELOPEr
