@@ -1,59 +1,46 @@
-import express from "express";
+
 import User from "../models/user_model.js";
-import { validemail } from "../middleware/validation.js";
+import { validemail } from "../middleware/Validate.js";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import bcrypt from "bcrypt";
-import { checkAuthorization } from "../middleware/ValidateUser.js";
 import Portfolio from "../models/portfolio_model.js";
 
 export const signUp = async (req, res) => {
   const { userName, email, password, confirmPassword } = req.body;
   const profile = await User.findOne({ userName });
   if (profile) {
-    res.status(500).json({ message: "user already exists" });
-    return;
+    return res.status(500).json({ message: "user already exists" });
   }
 
   //checking mail already exsists
   const checkForMail = await User.findOne({ email });
   if (checkForMail) {
-    res.status(500).json({ message: "mail is already registered" });
-    return;
+    return res.status(500).json({ message: "mail is already registered" });
   }
-  // console.log("password is", password, "confirm password is", confirmPassword);
 
   ///validations
   if (!validemail(email)) {
-    res.status(500).json({ message: "Invalid email:Please check again" });
-    return;
+    return res.status(500).json({ message: "Invalid email:Please check again" });
+   
   }
   if (confirmPassword != password) {
-    res
-      .status(500)
-      .json({ message: "Password and confirmPassword must be same" });
+    res.status(500).json({ message: "Password and confirmPassword must be same" });
     return;
   }
   if (password.length < 6) {
-    res
-      .status(500)
-      .json({ message: "Password should have minimum 6 characters" });
-    return;
+    return res.status(500).json({ message: "Password should have minimum 6 characters" });
   }
+
   //saving in database
   const newPassword = password + process.env.PEPPER;
-  const hashedPassword = await bcrypt
-    .genSalt(10)
-    .then((salt) => bcrypt.hash(newPassword, salt));
+  const hashedPassword = await bcrypt.genSalt(10).then((salt) => bcrypt.hash(newPassword, salt));
   const user = new User({ userName, email, password: hashedPassword });
-  const portfolio = new Portfolio({ userId: user._id, balance: 1000, portfolio :[]});
+  const portfolio = new Portfolio({ userId: user._id, balance: 1000, portfolio: [] });
   try {
     console.log("saving");
     await portfolio.save();
     user.portfolio = portfolio._id;
-
     await user.save();
-
     res.status(201).json({ message: "user created successfully" });
   } catch (e) {
     res.status(500).json({ message: "Internal server error" });
@@ -87,34 +74,28 @@ export const signIn = async (req, res) => {
 };
 
 export const fetchUser = (req, res) => {
-  console.log(req.decoded_token);
-  // res.status(200).json({msg:"Check cnsole"});
   res.status(200).json({ message: req.decoded_token });
 };
 
-export const getUserDetails=async(req,res)=>{
-  console.log(req.decoded_token);
-  try{
-    const user= await User.findById(req.decoded_token.id);
-    console.log(user);
-    res.status(200).json({user:user});
-  }catch(e)
-  {
-    res.status(500).json({user:"No user found"});
+export const getUserDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.decoded_token.id);
+    res.status(200).json({ user: user });
+  } catch (e) {
+    res.status(500).json({ user: "No user found" });
   }
- 
+
 
 }
-export const updateUsername=async(req,res)=>{
-  const {updateUserName}=req.body;
-  try{
-    const user= await User.findById(req.decoded_token.id);
-    user.userName=updateUserName;
+export const updateUsername = async (req, res) => {
+  const { updateUserName } = req.body;
+  try {
+    const user = await User.findById(req.decoded_token.id);
+    user.userName = updateUserName;
     await user.save();
-    res.status(200).json({message:"Updated successfully"});
-  }catch(e)
-  {
-    res.status(500).json({message:"No user found"});
+    res.status(200).json({ message: "Updated successfully" });
+  } catch (e) {
+    res.status(500).json({ message: "No user found" });
   }
- 
+
 }
