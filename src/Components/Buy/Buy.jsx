@@ -35,7 +35,39 @@ function Buy() {
     },
   };
 
+  const chartOptions2 = {
+    title: "Price vs Date",
+    hAxis: { title: "Date", titleTextStyle: { color: "#333" } },
+    vAxis: { minValue: 0 },
+    backgroundColor: 'transparent',
+    chartArea: { width: "90%", height: "80%" },
+    candlestick: {
+      fallingColor: { strokeWidth: 0, fill: "#f6465d" }, // red
+      risingColor: { strokeWidth: 0, fill: "#0ccb80" }, // green
+    },
+    colors: ["#808080"],
+    explorer: {
+      maxZoomout: 2,
+      keepInBounds: true,
+    },
+  };
 
+  const chartOptions3 = {
+    title: "Price vs Date",
+    hAxis: { title: "Date", titleTextStyle: { color: "#333" } },
+    vAxis: { minValue: 0 },
+    backgroundColor: 'transparent',
+    chartArea: { width: "90%", height: "80%" },
+    candlestick: {
+      fallingColor: { strokeWidth: 0, fill: "#f6465d" }, // red
+      risingColor: { strokeWidth: 0, fill: "#0ccb80" }, // green
+    },
+    colors: ["#808080"],
+    explorer: {
+      maxZoomout: 2,
+      keepInBounds: true,
+    },
+  };
   const handleSubmit = async () => {
     try {
       setGettingDetails(true);
@@ -138,7 +170,30 @@ function Buy() {
                 )}
               </div>
 
-
+              <div className="flex flex-col sm:flex-row justify-center items-center mt-3">
+                      <input
+                        className="border-2 my-2 border-lightpurple mr-2 bg-purple-100 p-2.5 rounded-md w-full sm:w-48"
+                        placeholder="Enter Quantity"
+                        type="Number"
+                        onChange={(e) => setStockQuantity(e.target.value)}
+                      />
+                </div>
+                <div className="flex flex-col sm:flex-row justify-center items-center mt-3">
+                      <input
+                        className="border-2 my-2 border-lightpurple mr-2 bg-purple-100 p-2.5 rounded-md w-full sm:w-48"
+                        placeholder="Enter Quantity"
+                        type="Number"
+                        onChange={(e) => setStockQuantity(e.target.value)}
+                      />
+                </div>
+              <div className="flex flex-col sm:flex-row justify-center items-center mt-3">
+                      <input
+                        className="border-2 my-2 border-lightpurple mr-2 bg-purple-100 p-2.5 rounded-md w-full sm:w-48"
+                        placeholder="Enter Quantity"
+                        type="Number"
+                        onChange={(e) => setStockQuantity(e.target.value)}
+                      />
+                </div>
 
             </div>
             <div className="w-full">

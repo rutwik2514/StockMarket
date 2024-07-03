@@ -112,6 +112,9 @@ export const buyStock=async(stockName,stockInfo,stockQuantity)=>{
     stockBuyQuantity:stockQuantity
   },{ headers: { authorization: token ? `${token}` : " " } });
   console.log(response.data.message);
+
+  
+  
   return {message:response.data.message};
 }
 export const getStockData=async()=>{
@@ -180,3 +183,11 @@ export const updateProfile=async(updateUserName)=>{
     return {response:null};
   }
 }
+
+const token = localStorage.getItem("user");
+const response= await axios.post("http://localhost:3001/api/stock/buy",{
+  stockName:stockName,
+  stockBuyingPrice:stockInfo,
+  stockBuyQuantity:stockQuantity
+},{ headers: { authorization: token ? `${token}` : " " } });
+console.log(response.data.message);
