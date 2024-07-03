@@ -20,6 +20,7 @@ mongoose.connect(process.env.MONGO).then(()=>{
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
+//as/dlkasdas
 app.use('/api/auth',authRoutes);
 app.use('/api/stock',stockRoutes);
 

@@ -17,7 +17,7 @@ export const Buy = async (req, res) => {
     const dateObj = new Date();
     const currentDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')} ${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')}:00`;
     console.log(currentDate); // Outputs the current date in "YYYY-MM-DD HH:MM:00" format
-
+      //asndaksjndaskjdasdioas
     //check if stock name already exsists
     const stock = portfolio_user.portfolio.find(
       (stock) => stock.stockName === stockName
@@ -33,7 +33,6 @@ export const Buy = async (req, res) => {
     //if stock is buyed first time, push everything
     if (stock == null) {
       portfolio_user.portfolio.push({
-        stockName: stockName,
         stockBuyingPrice: [
           {
             stockBuyQuantity: stockBuyQuantity,
@@ -49,7 +48,6 @@ export const Buy = async (req, res) => {
     //if stock was buyed already, then just update that field
     else {
       stock.stockBuyingPrice.push({
-        stockBuyQuantity: stockBuyQuantity,
         stockBuyPrice: stockBuyingPrice,
         stockBuyDate: currentDate,
       });
@@ -78,16 +76,39 @@ export const Sell = async (req, res) => {
   const { stockName, stockQuantity, token, stockPrice } = req.body;
   const userId = req.decoded_token.id;
   //getting to and from date
-  const dateObj = new Date();
-  dateObj.setDate(dateObj.getDate() - 1);
-  const formattedDate = formatDate(dateObj);
-  const dateObj2 = new Date();
-  dateObj2.setDate(dateObj2.getDate() - 2);
-  const formattedDate2 = formatDate(dateObj2);
 
   //for now date is static for development purpose, afterwards please change it to current date
   let currentDate = `2024-06-14 14:30:00`;
 
+  console.log(currentDate); // Outputs the current date in "YYYY-MM-DD HH:MM:00" format
+      //asndaksjndaskjdasdioas
+    //check if stock name already exsists
+    const stock = portfolio_user.portfolio.find(
+      (stock) => stock.stockName === stockName
+    );
+
+    //checking if have enough balance
+    if (portfolio_user.balance - stockBuyQuantity * stockBuyingPrice >= 0)
+      portfolio_user.balance -= stockBuyQuantity * stockBuyingPrice;
+    else {
+      return res.status(500).json({ message: "You do not have enough balance" });
+    }
+
+    //if stock is buyed first time, push everything
+    if (stock == null) {
+      portfolio_user.portfolio.push({
+        stockBuyingPrice: [
+          {
+            stockBuyQuantity: stockBuyQuantity,
+            stockBuyPrice: stockBuyingPrice,
+            stockBuyDate: currentDate,
+          },
+        ],
+        stockSell: [],
+        stockRemainigQuantity: stockBuyQuantity,
+      });
+      await portfolio_user.save();
+    }
   try {
     const portfolio = await Portfolio.findOne({ userId: userId });
     const stockRemainingQuantities = portfolio.filter(stock => stock.stockName === stockName).map(filteredStock => filteredStock.stockRemainigQuantity);
@@ -111,6 +132,37 @@ export const Sell = async (req, res) => {
     } catch (error) {
       console.log(error)
       res.status(500).json({ message: "Error Updating Portfolio" })
+    }
+    
+
+    console.log(currentDate); // Outputs the current date in "YYYY-MM-DD HH:MM:00" format
+      //asndaksjndaskjdasdioas
+    //check if stock name already exsists
+    const stock2 = portfolio_user.portfolio.find(
+      (stock) => stock.stockName === stockName
+    );
+
+    //checking if have enough balance
+    if (portfolio_user.balance - stockBuyQuantity * stockBuyingPrice >= 0)
+      portfolio_user.balance -= stockBuyQuantity * stockBuyingPrice;
+    else {
+      return res.status(500).json({ message: "You do not have enough balance" });
+    }
+
+    //if stock is buyed first time, push everything
+    if (stock == null) {
+      portfolio_user.portfolio.push({
+        stockBuyingPrice: [
+          {
+            stockBuyQuantity: stockBuyQuantity,
+            stockBuyPrice: stockBuyingPrice,
+            stockBuyDate: currentDate,
+          },
+        ],
+        stockSell: [],
+        stockRemainigQuantity: stockBuyQuantity,
+      });
+      await portfolio_user.save();
     }
 
   } catch (e) {
@@ -138,6 +190,7 @@ export const showStocks = async (req, res) => {
     res.status(500).json({ message: "error occured" });
   }
 };
+
 
 
 
