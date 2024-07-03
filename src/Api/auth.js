@@ -133,7 +133,7 @@ export const handleSell=async(stockName,stockQuantity)=>{
     const response= await axios.post("http://localhost:3001/api/stock/sell",{
       stockName:stockName,
       stockQuantity:stockQuantity,
-      token1:token
+      token:token
     },{
       headers: { authorization: token ? `${token}` : " " }
     })

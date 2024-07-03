@@ -1,131 +1,167 @@
-import React, { useEffect, useState } from "react";
-import { getStockData } from "../../Api/auth";
-import Card from "./Card";
-import Navbar from "../../Utilis/Navbar/Navbar";
-import BalanceDisplay from "../../Utilis/BalanceDisplay/BalanceDisplay";
-import Loader from "../../Utilis/Loader/Loader";
-import { ToastContainer } from "react-toastify";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import {getMonthlyData, getStock, handleSell} from '../../Api/auth'
+// import { ChartDisplay } from "./Chart";
+import { Linechart } from "../../Utilis/Charts/LineChart";
 
-export default function Sell() {
-  const [userStockInfo, setUserStockInfo] = useState([]);
+function Card({ stockName, stockQuantity }) {
+  const navigate = useNavigate();
+  const [sellQuantity, setSellQuantity] = useState(0);
+  const [showSellInput, setShowSellInput] = useState(false);
+  const [stockInfo, setStockInfo] = useState(null);
+  const [date,setDate]=useState([]);
+  const [low,setLow]=useState([]);
+  const [chartData, setChartData] = useState(null);
+  const [chartOptions, setChartOptions] = useState(null);
+  const handleGetdetails = () => {
+    navigate(`/details/${stockName}`);
+  };
+  const handleSellStocks = async() => {
+    // Implement the sell functionality here
+    console.log(`Selling ${stockQuantity} stocks of ${stockName}`);
+    // Reset the sell quantity after selling
+    if (showSellInput == false) setShowSellInput(true);
+    else setShowSellInput(false);
+    try {
+      const response = await getStock(stockName);
+      setStockInfo(response.stockInfo[0]);
+    } catch (e) {
+      console.log(e);
+    }
+    try {
+      const res = await getMonthlyData(stockName);
+      // toast.success(res.message);
+      low.length=0;
+      date.length=0;
+      console.log("monthly response is ",res.startingEntries);
+      res.startingEntries.map((item)=>{
+        const temp=date;
+        temp.push(item.date);
+        setDate(temp);
+        const temp2=low;
+        temp2.push(Number(item.low));
+        console.log(item.low)
+        setLow(temp2);
+      })
+      date.reverse();
+      low.reverse();
+      const data = [
+        ["Date", "Price of stock"],
+        ...low.map((y, index) => [ date[index],y])
+      ];
+      
+      const options= {
+        title: "Price vs Date",
+        hAxis: { title: "Date", titleTextStyle: { color: "#333" } },
+        vAxis: { minValue: 0 },
+        backgroundColor:'#FFFBF5',
+        chartArea: { width: "50%", height: "70%" },
+      };
+      setChartData(data);
+      setChartOptions(options);
+      // console.log(res);
+    } catch (e) {
+      // toast.error("Error in showing Graph");
+      // console.log(e);
+    }
+    //  console.log()
+  };
 
-  useEffect(() => {
-    const func = async () => {
-      try {
-        const data = await getStockData();
-        console.log("selling");
-        // console.log(data?.portfolio_user?.portfolio_user);
-        setUserStockInfo(data?.portfolio_user?.portfolio_user);
-      } catch (e) {
-        console.log(e);
+  const handleConfirmSell = async() => {
+     console.log("handle confirm sell",sellQuantity)
+     if(sellQuantity>stockQuantity)
+      {
+         toast.error("Dont have enough Stocks to Sell")
       }
-    };
-    func();
-  }, []);
+      try{
+        const response= await handleSell(stockName,sellQuantity);
+        if (response?.error == null) {
+           toast.success("Portfolio Updated Successfully");
+        } else {
+          toast.error(response.error);
+        }
+      }catch(e)
+      {
+        toast.error("Something Error Occured");
+      }
+    
+   
+  };
   return (
-    // <div className="container   mx-auto p-4">
-    //   <h1 className="text-5xl  my-3 flex font-extrabold mb-4 text-[#52057B] justify-center items-center">Sell Stocks</h1>
-    //   <div className="">
-    //     <p className="mb-2 md-3 text-grey-800 font-bold text-3xl">Balance: {userStockInfo.balance}</p>
-    //     {userStockInfo?.portfolio?.map((stock, index) => (
-    //       <div key={index} className="mb-4">
-    //         <Card
-    //           stockName={stock.stockName}
-    //           stockQuantity={stock.stockRemainigQuantity}
-    //         />
-    //       </div>
-    //     ))}
-    //   </div>
-    // </div>
-    <>
-      <Navbar />
-      <div style={{ width: "100vw", display: "flex", justifyContent: "flex-end" }}>
-        <BalanceDisplay />
+    <div className="w-full p-6 sm:w-full   rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="w-full">
+        <h5 className="mb-2 text-2xl font-bold tracking-tight dark:bg-gray-800 text-[#FFFBF5]">
+          StockName: {stockName}
+        </h5>
       </div>
-      <section style={{ minHeight: "100vh", width: "100vw" }} className="row">
-        <div className="col-md-6" style={{ marginTop: "-20px" }}>
-          <div className="flex flex-col w-full items-center p-4">
-            {/* <Sidebar_responsive /> */}
-            <div className="w-full max-w-md flex-grow p-4">
-              <div className="text-[#52057B] font-extrabold text-5xl  flex items-center justify-center">Sell Stocks</div>
-              <div className="flex flex-col sm:flex-row  my-7 justify-center items-center">
-                <input
-                  className="border-2 border-lightpurple bg-purple-100 p-2.5 rounded-md mb-2 sm:mb-0 sm:mr-2 w-full sm:w-48"
-                  placeholder="Enter Stock Name"
-                  // onChange={(e) => setStockName(e.target.value)}
-                />
-                <button
-                  className="p-2.5 bg-[#7743DB] text-white rounded-lg hover:bg-[#C3ACD0] hover:text-black mb-2 sm:mb-0 w-full sm:w-48"
-                  // onClick={handleSubmit}
-                >
-                  Get Details
-                </button>
-              </div>
-              {/* {gettingDetails && <center><div ><Loader /></div></center>} */}
-
-
-              <div className="flex justify-center items-center mt-4">
-                {/* {stockInfo && !gettingDetails && (
-                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-                    <div className="text-black grid grid-cols-2 grid-rows-2 gap-5 p-4 rounded-md w-full sm:w-48 shadow-md" style={{ width: "100%", border: "1px solid purple" }}>
-                      <p className="text-lg font-bold" style={{ color: "green" }}>Open: {stockInfo.open}</p>
-                      <p className="text-lg font-bold">Low: {stockInfo.low}</p>
-                      <p className="text-lg font-bold" >High: {stockInfo.high}</p>
-                      <p className="text-lg font-bold" style={{ color: "red" }}>Close: {stockInfo.close}</p>
-                    </div>
-                    <p style={{ fontWeight: "bold" }}>Note: These stock prices are from one minute ago.</p>
-                    <div className="flex flex-col sm:flex-row justify-center items-center mt-3">
-                      <input
-                        className="border-2 my-2 border-lightpurple mr-2 bg-purple-100 p-2.5 rounded-md w-full sm:w-48"
-                        placeholder="Enter Quantity"
-                        type="Number"
-                        onChange={(e) => setStockQuantity(e.target.value)}
-                      />
-                      <button
-                        onClick={handleBuyStock}
-                        className="btn btn-outline-success w-full sm:w-48 p-2.5"
-                        style={{ height: "100%" }}
-                      >
-                        Buy
-                      </button>
-                    </div>
-                  </div>
-                )} */}
-              </div>
-
-
-
+      <div>
+        <h5 className="mb-2 text-2xl font-bold tracking-tight dark:bg-gray-800 text-[#FFFBF5]">
+          StockQuantity: {stockQuantity}
+        </h5>
+      </div>
+      <button
+        onClick={() => handleGetdetails()}
+        className="inline-flex items-center  px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Get Details{" "}
+      </button>
+      <button
+        onClick={handleSellStocks}
+        className="inline-flex items-center ml-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        {" "}
+        Sell Stocks
+      </button>
+      {showSellInput && (
+        <div className="mt-4 w-full">
+          <input
+            type="number"
+            placeholder="Enter quantity to sell"
+            onChange={(e)=>{
+              setSellQuantity(e.target.value)
+            }}
+            className="border m-2 border-gray-300 rounded-md p-2 mb-2"
+          />
+          {stockInfo && (
+            <div className="flex-row gap-4">
+                <div className=" rounded-md flex-col p-2">
+              <p className="text-lg font-bold text-black">Open: {stockInfo.open}</p>
+              <p className="text-lg font-bold text-black">Close: {stockInfo.close}</p>
+              <p className="text-lg font-bold text-black">Low: {stockInfo.low}</p>
+              <p className="text-lg font-bold text-black">High: {stockInfo.high}</p>
             </div>
-            <div className="w-full">
-
+         
             </div>
-            <ToastContainer
-              position="top-center"
-              autoClose={1000}
-              hideProgressBar={false}
-              newestOnTop={true}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-          </div>
-        </div>
-        {/* {!gettingDetails && <div className="col-md-6">
-          {chartData.length == 0 && !gettingDetails && <Lottie animationData={animation} className="sm:max-w-1/2" style={{ height: "600px" }} />}
-          {gettingDetails && <div ><Loader /></div>}
-          {chartData.length > 0 && (
-            <div style={{ marginTop: "130px" }}>
-              <CandlestickChart data={chartData} options={chartOptions} loader={<div>Loading Chart</div>} />
-            </div>
+          
           )}
-        </div>}
-        {gettingDetails && <div className="col-md-6" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          {gettingDetails && <div ><Loader /></div>}
-        </div>} */}
-      </section>
-
-    </>
+          <button
+            onClick={handleConfirmSell}
+            className="bg-green-500 text-white px-4 m-1 p-2 rounded-md "
+          >
+            Confirm Sell
+          </button>
+          <div className="w-full">
+        {date.length > 0 && (
+          <Linechart data={chartData} options={chartOptions} />
+        )}
+      </div>
+        </div>
+      )}
+       <ToastContainer
+      position="top-center"
+      autoClose={1000}
+      hideProgressBar={false}
+      newestOnTop={true}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+    />
+    </div>
   );
 }
+
+export default Card;
