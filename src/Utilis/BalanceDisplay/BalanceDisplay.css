@@ -1,0 +1,41 @@
+
+  
+  .balance-icon {
+    background-color: #c492f7;
+    color: white;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .balance-amount {
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    padding: 10px 20px;
+    background-color: #c492f7 !important;
+    color: #fff;
+    border: none;
+    border-radius: 20px;;
+    cursor: pointer;
+    text-decoration: none;
+    height: 40px; 
+    width: 100px;
+  }
+
+
+  
+  /* padding: 10px 20px;
+  background-color: #c492f7 !important;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  text-decoration: none; */
+  
